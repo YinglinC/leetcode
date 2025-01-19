@@ -86,4 +86,36 @@ public:
 
 栈和队列的做法没思路
 
-cv
+```cpp
+class Solution {
+public:
+    class mycomparsion{
+        public:
+            bool operator()(const pair<int, int>& lhs, const pair<int,int>& rhs){
+                return lhs.second > rhs.second;
+            }
+    };
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> map;
+        for(int i = 0; i < nums.size(); i++){
+            map[nums[i]]++;
+        }
+
+        priority_queue<pair<int, int>, vector<pair<int, int>>, mycomparsion> pri_que;
+
+        for(auto it = map.begin(); it != map.end(); it++){
+            pri_que.push(*it);
+            if(pri_que.size() > k)pri_que.pop();
+        }
+
+        vector<int> result(k);
+        for(int i = k - 1; i>=0;i--){
+            result[i] = pri_que.top().first;
+            pri_que.pop();
+        }
+        return result;
+    }
+};
+```
+
+问题，需要熟悉c++的优先队列，以及pair的用法
